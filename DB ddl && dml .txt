@@ -1,0 +1,87 @@
+CREATE DATABASE `employee` ;
+use employee; 
+
+-- rollback ddl
+DROP TABLE employee_transaction_history;
+DROP TABLE employee_transaction_type;
+DROP TABLE employees;
+DROP TABLE employee_sub_status;
+DROP TABLE employee_status;
+
+CREATE TABLE employee_status (
+  employee_status_id  int NOT NULL,
+  employee_status_name varchar(255) NOT NULL,
+  depends_on_status_id int ,
+ CONSTRAINT employee_status_id_pk PRIMARY KEY (employee_status_id) ,
+ CONSTRAINT depends_on_stat_FK FOREIGN KEY (depends_on_status_id)    REFERENCES employee_status (employee_status_id)  
+) ;
+
+CREATE TABLE employee_sub_status (
+  employee_sub_status_id  int NOT NULL,
+  employee_sub_status_name varchar(255)  NOT NULL,
+  employee_status_id  int NOT NULL,
+  depends_on_sub_status_id int DEFAULT NULL,
+  CONSTRAINT employee_sub_status_id_pk PRIMARY KEY (employee_sub_status_id) ,
+  CONSTRAINT employee_sub_stat_FK FOREIGN KEY (employee_status_id)  REFERENCES employee_status (employee_status_id)  ,
+  CONSTRAINT depends_on_sub_stat_FK FOREIGN KEY (depends_on_sub_status_id) REFERENCES employee_sub_status (employee_sub_status_id)  
+) ;
+
+
+CREATE table employees(
+   employee_id bigint NOT NULL AUTO_INCREMENT,
+   employee_name varchar(100) NOT NULL,
+   employee_username varchar(30) NOT NULL,
+   employee_age int DEFAULT NULL,
+   employee_status_id int NOT NULL,
+   employee_process_id varchar(100)  DEFAULT NULL,
+   PRIMARY KEY ( employee_id ),
+   CONSTRAINT employee_stat_FK FOREIGN KEY (employee_status_id)  REFERENCES employee_status (employee_status_id)  
+);
+
+CREATE TABLE employee_transaction_type
+   (
+    transaction_type_id int NOT NULL,
+	transaction_type_name varchar(100) NOT NULL ,
+    CONSTRAINT transaction_type_id_pk PRIMARY KEY (transaction_type_id) 
+   ) ;
+   
+ CREATE TABLE employee_transaction_history 
+   (
+    transaction_history_id BIGINT NOT NULL AUTO_INCREMENT, 
+	transaction_history_date TIMESTAMP (6) NOT NULL,
+	transaction_type_id int NOT NULL,
+	employee_id BIGINT NOT NULL, 
+	employee_status_id int NOT NULL, 
+    employee_Sub_status_id int DEFAULT NULL,
+	CONSTRAINT transaction_history_id_PK PRIMARY KEY (transaction_history_id) ,
+	CONSTRAINT transaction_his_empl_fk FOREIGN KEY (employee_id)   REFERENCES employees (employee_id)  ,
+	CONSTRAINT transaction_type_id_FK FOREIGN KEY (transaction_type_id) REFERENCES employee_transaction_type (transaction_type_id) ,
+	CONSTRAINT history_stat_FK FOREIGN KEY (employee_status_id)  REFERENCES employee_status (employee_status_id)  ,
+    CONSTRAINT history_sub_stat_FK FOREIGN KEY (employee_Sub_status_id)  REFERENCES employee_sub_status (employee_Sub_status_id)               
+   ) ;
+   
+-- rollback dml
+delete  from employee_transaction_history ;
+delete from  employee_transaction_type ;
+delete from  employees ;
+update employee_status set depends_on_status_id = null ;
+update employee_sub_status set depends_on_sub_status_id = null ;
+delete from  employee_status ;
+
+INSERT INTO employee_transaction_type (transaction_type_id, transaction_type_name) VALUES(1, 'TRANSACTION_TYPE_ADD_EMPLOYEE');
+INSERT INTO employee_transaction_type (transaction_type_id, transaction_type_name) VALUES(2, 'TRANSACTION_TYPE_UPDATE_STATUS');
+INSERT INTO employee_transaction_type (transaction_type_id, transaction_type_name) VALUES(3, 'TRANSACTION_TYPE_FIND_EMPLOYEE');
+
+INSERT INTO employee_status (employee_status_id, employee_status_name , depends_on_status_id) VALUES(1, 'ADDED' , null);
+INSERT INTO employee_status (employee_status_id, employee_status_name , depends_on_status_id) VALUES(2, 'IN_CHECK' , 1);
+INSERT INTO employee_status (employee_status_id, employee_status_name , depends_on_status_id) VALUES(3, 'APPROVED' , null);
+INSERT INTO employee_status (employee_status_id, employee_status_name , depends_on_status_id) VALUES(4, 'ACTIVE' , 3);
+
+INSERT INTO employee_sub_status (employee_sub_status_id,employee_status_id, employee_sub_status_name , depends_on_sub_status_id) VALUES(1,2, 'SECURITY_CHECK_STARTED' , null);
+INSERT INTO employee_sub_status (employee_sub_status_id,employee_status_id, employee_sub_status_name , depends_on_sub_status_id) VALUES(2,2, 'SECURITY_CHECK_FINISHED' , 1);
+INSERT INTO employee_sub_status (employee_sub_status_id,employee_status_id, employee_sub_status_name , depends_on_sub_status_id) VALUES(3,2, 'WORK_PERMIT_CHECK_STARTED' , null);
+INSERT INTO employee_sub_status (employee_sub_status_id,employee_status_id, employee_sub_status_name , depends_on_sub_status_id) VALUES(4,2, 'WORK_PERMIT_CHECK_PENDING_VERIFICATION' , 3);
+INSERT INTO employee_sub_status (employee_sub_status_id,employee_status_id, employee_sub_status_name , depends_on_sub_status_id) VALUES(5,2, 'WORK_PERMIT_CHECK_FINISHED' , 4);
+
+
+

@@ -1,0 +1,161 @@
+
+Step 1 :  post employee 
+
+{
+  "employeeAge": 30,
+  "employeeName": "Abdullah Hamed Elbaz",
+  "employeeUserName": "Abdullah@workmotion.com"
+}
+
+Step 2 :  get employee 
+{
+  "employeeName": "Abdullah Hamed Elbaz",
+  "employeeUserName": "Abdullah@workmotion.com",
+  "employeeAge": 30,
+  "lastEmployeeSubtatusName": null,
+  "employeesStatus": {
+    "employeeStatusId": 1,
+    "employeeStatusName": "ADDED"
+  },
+  "employeeProcessId": "4d5169b0-abd8-11ed-b92e-fe3c4d4dd0e1"
+}
+
+
+Step 3 : INCORRECT SENARIO SET ACTIVE status 
+
+{
+  "employeeAge": 30,
+  "employeeName": "Abdullah Hamed",
+  "employeeUserName": "Abdullah@workmotion.com",
+  "employeesStatus": {
+    "employeeStatusId": 0,
+    "employeeStatusName": "ACTIVE"
+  }
+}
+
+Step 4 : change status to in-check
+{
+  "employeeAge": 30,
+  "employeeName": "Abdullah Hamed",
+  "employeeUserName": "Abdullah@workmotion.com",
+  "employeesStatus": {
+    "employeeStatusId": 0,
+    "employeeStatusName": "IN_CHECK"
+  }
+}
+
+Step 5 : INCORRECT STEP > SET WORK_PERMIT_CHECK_FINISHED WITHOUT Verification EVENT
+{
+  "employeeAge": 30,
+  "employeeName": "Abdullah Hamed",
+  "employeeUserName": "Abdullah@workmotion.com",
+  "employeesStatus": {
+    "employeeStatusId": 0,
+    "employeeStatusName": "IN_CHECK"
+  },
+   "lastEmployeeSubtatusName": "WORK_PERMIT_CHECK_FINISHED"
+}
+
+Step 6 :  set sub status  WORK_PERMIT_CHECK_PENDING_VERIFICATION 
+
+
+{
+  "employeeAge": 30,
+  "employeeName": "Abdullah Hamed",
+  "employeeUserName": "Abdullah@workmotion.com",
+  "employeesStatus": {
+    "employeeStatusId": 0,
+    "employeeStatusName": "IN_CHECK"
+  },
+   "lastEmployeeSubtatusName": "WORK_PERMIT_CHECK_PENDING_VERIFICATION"
+}
+
+
+Step 7 :  set sub status  WORK_PERMIT_CHECK_FINISHED 
+
+{
+  "employeeAge": 30,
+  "employeeName": "Abdullah Hamed",
+  "employeeUserName": "Abdullah@workmotion.com",
+  "employeesStatus": {
+    "employeeStatusId": 0,
+    "employeeStatusName": "IN_CHECK"
+  },
+   "lastEmployeeSubtatusName": "WORK_PERMIT_CHECK_FINISHED"
+}
+
+Step 8 : get employee by user name (still in-check)
+{
+  "employeeName": "Abdullah Hamed Elbaz",
+  "employeeUserName": "Abdullah@workmotion.com",
+  "employeeAge": 30,
+  "lastEmployeeSubtatusName": null,
+  "employeesStatus": {
+    "employeeStatusId": 2,
+    "employeeStatusName": "IN_CHECK"
+  },
+  "employeeProcessId": "4d5169b0-abd8-11ed-b92e-fe3c4d4dd0e1"
+}
+
+Step 9:  set sub status  SECURITY_CHECK_FINISHED 
+{
+  "employeeAge": 30,
+  "employeeName": "Abdullah Hamed",
+  "employeeUserName": "Abdullah@workmotion.com",
+  "employeesStatus": {
+    "employeeStatusId": 0,
+    "employeeStatusName": "IN_CHECK"
+  },
+   "lastEmployeeSubtatusName": "SECURITY_CHECK_FINISHED"
+}
+
+Step 10 : get employee by user name (Approved finished all event)
+{
+  "employeeName": "Abdullah Hamed Elbaz",
+  "employeeUserName": "Abdullah@workmotion.com",
+  "employeeAge": 30,
+  "lastEmployeeSubtatusName": null,
+  "employeesStatus": {
+    "employeeStatusId": 3,
+    "employeeStatusName": "APPROVED"
+  },
+  "employeeProcessId": "4d5169b0-abd8-11ed-b92e-fe3c4d4dd0e1"
+}
+
+Step 11 : Set Active by sub status (ICORRECT ACTION )
+{
+  "employeeAge": 30,
+  "employeeName": "Abdullah Hamed",
+  "employeeUserName": "Abdullah@workmotion.com",
+  "employeesStatus": {
+    "employeeStatusId": 0,
+    "employeeStatusName": "ACTIVE"
+  },
+   "lastEmployeeSubtatusName": "SECURITY_CHECK_FINISHED"
+}
+
+Step 12  Set Active Success 
+{
+  "employeeAge": 30,
+  "employeeName": "Abdullah Hamed",
+  "employeeUserName": "Abdullah@workmotion.com",
+  "employeesStatus": {
+    "employeeStatusId": 0,
+    "employeeStatusName": "ACTIVE"
+  }
+}
+
+Step 13 Get employee by user name 
+{
+  "employeeName": "Abdullah Hamed Elbaz",
+  "employeeUserName": "Abdullah@workmotion.com",
+  "employeeAge": 30,
+  "lastEmployeeSubtatusName": null,
+  "employeesStatus": {
+    "employeeStatusId": 4,
+    "employeeStatusName": "ACTIVE"
+  },
+  "employeeProcessId": "4d5169b0-abd8-11ed-b92e-fe3c4d4dd0e1"
+}
+
+

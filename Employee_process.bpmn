@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0va41iw" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.0.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.1.0">
+  <bpmn:collaboration id="EMPLOYEE">
+    <bpmn:documentation> </bpmn:documentation>
+    <bpmn:participant id="EMPLOYEE_PROC" name="EMPLOYEE_PROCESS" processRef="EMPLOYEE_PROCESS" />
+  </bpmn:collaboration>
+  <bpmn:process id="EMPLOYEE_PROCESS" name="EMPLOYEE_PROCESS" isExecutable="true">
+    <bpmn:intermediateThrowEvent id="Event_0s649bm">
+      <bpmn:incoming>Flow_0b493s2</bpmn:incoming>
+      <bpmn:outgoing>Flow_11uekut</bpmn:outgoing>
+    </bpmn:intermediateThrowEvent>
+    <bpmn:intermediateThrowEvent id="Event_183spo5">
+      <bpmn:incoming>Flow_0wjoj80</bpmn:incoming>
+      <bpmn:outgoing>Flow_0dv185t</bpmn:outgoing>
+    </bpmn:intermediateThrowEvent>
+    <bpmn:intermediateThrowEvent id="Event_0j50d28">
+      <bpmn:incoming>Flow_0s6tjei</bpmn:incoming>
+      <bpmn:outgoing>Flow_0t793va</bpmn:outgoing>
+    </bpmn:intermediateThrowEvent>
+    <bpmn:userTask id="WORK_CHECK_START" name="WORK_CHECK_START">
+      <bpmn:incoming>Flow_1p909ck</bpmn:incoming>
+      <bpmn:outgoing>Flow_0b493s2</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="WORK_VERIFICATION" name="WORK_VERIFICATION">
+      <bpmn:incoming>Flow_11uekut</bpmn:incoming>
+      <bpmn:outgoing>Flow_0s6tjei</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="WORK_CHECK_FINISH" name="WORK_CHECK_FINISH">
+      <bpmn:incoming>Flow_0t793va</bpmn:incoming>
+      <bpmn:outgoing>Flow_13vydzn</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="SEC_CHECK_START" name="SEC_CHECK_START">
+      <bpmn:incoming>Flow_070xz95</bpmn:incoming>
+      <bpmn:outgoing>Flow_0wjoj80</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="APPROVED" name="APPROVED">
+      <bpmn:incoming>Flow_1g0i13e</bpmn:incoming>
+      <bpmn:incoming>Flow_13vydzn</bpmn:incoming>
+      <bpmn:outgoing>Flow_1vdnbqv</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="SEC_CHECK_FINISH" name="SEC_CHECK_FINISH">
+      <bpmn:incoming>Flow_0dv185t</bpmn:incoming>
+      <bpmn:outgoing>Flow_1g0i13e</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="ADDED_EMPLOYEE" name="ADDED_EMPLOYEE">
+      <bpmn:incoming>Flow_0wkcbtm</bpmn:incoming>
+      <bpmn:outgoing>Flow_1bwsmse</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="ACTIVE" name="ACTIVE">
+      <bpmn:incoming>Flow_1vdnbqv</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:userTask id="IN_CHECK_EMPLOYEE" name="IN_CHECK_EMPLOYEE">
+      <bpmn:extensionElements>
+        <camunda:taskListener class="com.workmotion.employees.camunda.listener.InCheckEmployeeListener" event="create" />
+        <camunda:inputOutput>
+          <camunda:inputParameter name="check" />
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0pruw2l</bpmn:incoming>
+      <bpmn:outgoing>Flow_1p909ck</bpmn:outgoing>
+      <bpmn:outgoing>Flow_070xz95</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="IN_CHECK_EVENT" name="IN_CHECK_EVENT">
+      <bpmn:incoming>Flow_1bwsmse</bpmn:incoming>
+      <bpmn:outgoing>Flow_0pruw2l</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:startEvent id="Start" name="Start">
+      <bpmn:outgoing>Flow_0wkcbtm</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_1p909ck" sourceRef="IN_CHECK_EMPLOYEE" targetRef="WORK_CHECK_START" />
+    <bpmn:sequenceFlow id="Flow_070xz95" sourceRef="IN_CHECK_EMPLOYEE" targetRef="SEC_CHECK_START" />
+    <bpmn:sequenceFlow id="Flow_0b493s2" sourceRef="WORK_CHECK_START" targetRef="Event_0s649bm" />
+    <bpmn:sequenceFlow id="Flow_11uekut" sourceRef="Event_0s649bm" targetRef="WORK_VERIFICATION" />
+    <bpmn:sequenceFlow id="Flow_0wjoj80" sourceRef="SEC_CHECK_START" targetRef="Event_183spo5" />
+    <bpmn:sequenceFlow id="Flow_0dv185t" sourceRef="Event_183spo5" targetRef="SEC_CHECK_FINISH" />
+    <bpmn:sequenceFlow id="Flow_0s6tjei" sourceRef="WORK_VERIFICATION" targetRef="Event_0j50d28" />
+    <bpmn:sequenceFlow id="Flow_0t793va" sourceRef="Event_0j50d28" targetRef="WORK_CHECK_FINISH" />
+    <bpmn:sequenceFlow id="Flow_13vydzn" sourceRef="WORK_CHECK_FINISH" targetRef="APPROVED" />
+    <bpmn:sequenceFlow id="Flow_1g0i13e" sourceRef="SEC_CHECK_FINISH" targetRef="APPROVED" />
+    <bpmn:sequenceFlow id="Flow_1vdnbqv" sourceRef="APPROVED" targetRef="ACTIVE" />
+    <bpmn:sequenceFlow id="Flow_0wkcbtm" sourceRef="Start" targetRef="ADDED_EMPLOYEE" />
+    <bpmn:sequenceFlow id="Flow_1bwsmse" sourceRef="ADDED_EMPLOYEE" targetRef="IN_CHECK_EVENT" />
+    <bpmn:sequenceFlow id="Flow_0pruw2l" sourceRef="IN_CHECK_EVENT" targetRef="IN_CHECK_EMPLOYEE" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="EMPLOYEE">
+      <bpmndi:BPMNShape id="Participant_1tf3778_di" bpmnElement="EMPLOYEE_PROC" isHorizontal="true">
+        <dc:Bounds x="160" y="80" width="1560" height="510" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1p909ck_di" bpmnElement="Flow_1p909ck">
+        <di:waypoint x="600" y="280" />
+        <di:waypoint x="660" y="280" />
+        <di:waypoint x="660" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_070xz95_di" bpmnElement="Flow_070xz95">
+        <di:waypoint x="600" y="280" />
+        <di:waypoint x="660" y="280" />
+        <di:waypoint x="660" y="405" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0b493s2_di" bpmnElement="Flow_0b493s2">
+        <di:waypoint x="710" y="140" />
+        <di:waypoint x="772" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11uekut_di" bpmnElement="Flow_11uekut">
+        <di:waypoint x="808" y="140" />
+        <di:waypoint x="890" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0wjoj80_di" bpmnElement="Flow_0wjoj80">
+        <di:waypoint x="710" y="445" />
+        <di:waypoint x="772" y="445" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0dv185t_di" bpmnElement="Flow_0dv185t">
+        <di:waypoint x="808" y="445" />
+        <di:waypoint x="870" y="445" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0s6tjei_di" bpmnElement="Flow_0s6tjei">
+        <di:waypoint x="990" y="140" />
+        <di:waypoint x="1022" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0t793va_di" bpmnElement="Flow_0t793va">
+        <di:waypoint x="1058" y="140" />
+        <di:waypoint x="1100" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_13vydzn_di" bpmnElement="Flow_13vydzn">
+        <di:waypoint x="1150" y="180" />
+        <di:waypoint x="1150" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1g0i13e_di" bpmnElement="Flow_1g0i13e">
+        <di:waypoint x="970" y="445" />
+        <di:waypoint x="1020" y="445" />
+        <di:waypoint x="1020" y="310" />
+        <di:waypoint x="1100" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1vdnbqv_di" bpmnElement="Flow_1vdnbqv">
+        <di:waypoint x="1200" y="310" />
+        <di:waypoint x="1322" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0wkcbtm_di" bpmnElement="Flow_0wkcbtm">
+        <di:waypoint x="260" y="168" />
+        <di:waypoint x="260" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1bwsmse_di" bpmnElement="Flow_1bwsmse">
+        <di:waypoint x="310" y="280" />
+        <di:waypoint x="360" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0pruw2l_di" bpmnElement="Flow_0pruw2l">
+        <di:waypoint x="460" y="280" />
+        <di:waypoint x="500" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_0s649bm_di" bpmnElement="Event_0s649bm">
+        <dc:Bounds x="772" y="122" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_183spo5_di" bpmnElement="Event_183spo5">
+        <dc:Bounds x="772" y="427" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0j50d28_di" bpmnElement="Event_0j50d28">
+        <dc:Bounds x="1022" y="122" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1h0mpdp_di" bpmnElement="WORK_CHECK_START">
+        <dc:Bounds x="610" y="100" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1jm6c36_di" bpmnElement="WORK_VERIFICATION">
+        <dc:Bounds x="890" y="100" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1pmoxyi_di" bpmnElement="WORK_CHECK_FINISH">
+        <dc:Bounds x="1100" y="100" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_19u0f0w_di" bpmnElement="SEC_CHECK_START">
+        <dc:Bounds x="610" y="405" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_02z7bzp_di" bpmnElement="APPROVED">
+        <dc:Bounds x="1100" y="270" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_174wvfs_di" bpmnElement="SEC_CHECK_FINISH">
+        <dc:Bounds x="870" y="405" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0w9vryq_di" bpmnElement="ADDED_EMPLOYEE">
+        <dc:Bounds x="210" y="240" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1vpft4e_di" bpmnElement="ACTIVE">
+        <dc:Bounds x="1322" y="292" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1320" y="335" width="40" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1vbms8i_di" bpmnElement="IN_CHECK_EMPLOYEE">
+        <dc:Bounds x="500" y="240" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1apcp0s_di" bpmnElement="IN_CHECK_EVENT">
+        <dc:Bounds x="360" y="240" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_16cbf4o_di" bpmnElement="Start">
+        <dc:Bounds x="242" y="132" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="248" y="95" width="24" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
